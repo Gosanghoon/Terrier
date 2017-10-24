@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/password_View"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_xhdpi">
+
+    <EditText
+        android:id="@+id/login_text"
+        android:layout_width="253dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="45dp"
+        android:layout_marginRight="52dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="비밀번호를 입력하세요"
+        android:inputType="textPassword"
+        android:textColor="#5a5a5a"
+        android:textCursorDrawable="@null"
+        app:layout_constraintBottom_toTopOf="@+id/login_btn"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/login_btn"
+        android:layout_width="267dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="169dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#00ff0000"
+        android:text="로그인"
+        android:textStyle="bold"
+        android:textSize="17dp"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/find_btn"
+        android:layout_width="267dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="116dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#00ff0000"
+        android:text="비밀번호 찾기"
+        android:textStyle="bold"
+        android:textSize="17dp"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="266dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="44dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#ffff"
+        app:layout_constraintBottom_toTopOf="@+id/login_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "73149604602",
+    "firebase_url": "https://terrier-mdm-solution.firebaseio.com",
+    "project_id": "terrier-mdm-solution",
+    "storage_bucket": "terrier-mdm-solution.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73149604602:android:bca4a24b05be681a",
+        "android_client_info": {
+          "package_name": "org.androidtown.materialpractice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73149604602-2728h6ab8vtb9q1ov26gbuii9crh7vbc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTCOtxVXKikM5RrCUTLraHZs5xGSz53Oc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

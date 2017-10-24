@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_information"
+            android:title="개인정보 관리"
+            android:icon="@drawable/ic_person"/>
+        <item
+            android:id="@+id/nav_media"
+            android:title="미디어/무선통신 관리"
+            android:icon="@drawable/ic_rss"/>
+        <item
+            android:id="@+id/nav_test"
+            android:title="테스트" />
+        <item
+            android:id="@+id/nav_communication"
+            android:title=""
+            />
+        <item
+            android:id="@+id/nav_device"
+            android:title=""
+            />
+    </group>
+
+    <item android:title="백업">
+        <menu>
+            <item
+                android:id="@+id/nav_Img"
+                android:title="이미지/연락처" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,298 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:sl="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fl_activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <com.ssomai.android.scalablelayout.ScalableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        sl:scale_base_height="480"
+        sl:scale_base_width="1080">
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            sl:scale_height="380"
+            sl:scale_left="0"
+            sl:scale_top="210"
+            sl:scale_width="1080"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/main_1_xhdpi"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="#e0fffbfb"
+            sl:scale_height="380"
+            sl:scale_left="720"
+            sl:scale_top="210"
+            sl:scale_width="15"/>
+
+        <TextView
+            android:id="@+id/text_level"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00ff0000"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            sl:scale_height="300"
+            sl:scale_top="320"
+            sl:scale_width="300"
+            sl:scale_left="827"
+            sl:scale_textsize="95"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+    </com.ssomai.android.scalablelayout.ScalableLayout>
+
+    <com.ssomai.android.scalablelayout.ScalableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        sl:scale_base_height="480"
+        sl:scale_base_width="1080">
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            sl:scale_height="380"
+            sl:scale_left="0"
+            sl:scale_top="580"
+            sl:scale_width="1080"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:srcCompat="@drawable/main_2_xhdpi"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"/>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="#e0fffbfb"
+            sl:scale_height="380"
+            sl:scale_left="720"
+            sl:scale_top="580"
+            sl:scale_width="15"/>
+
+        <TextView
+            android:id="@+id/text_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00ff0000"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            sl:scale_height="300"
+            sl:scale_top="690"
+            sl:scale_width="300"
+            sl:scale_left="827"
+            sl:scale_textsize="95"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/text_day"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00ff0000"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            sl:scale_height="300"
+            sl:scale_top="846"
+            sl:scale_width="300"
+            sl:scale_left="827"
+            sl:scale_textsize="30"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+
+    </com.ssomai.android.scalablelayout.ScalableLayout>
+
+    <com.ssomai.android.scalablelayout.ScalableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        sl:scale_base_height="480"
+        sl:scale_base_width="1080">
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            sl:scale_height="400"
+            sl:scale_left="0"
+            sl:scale_top="970"
+            sl:scale_width="1080"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/main_3_xhdpi" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="#e0fffbfb"
+            sl:scale_height="400"
+            sl:scale_left="720"
+            sl:scale_top="970"
+            sl:scale_width="15"/>
+
+        <TextView
+            android:id="@+id/text_wifi"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00ff0000"
+            android:textStyle="bold"
+            sl:scale_height="300"
+            sl:scale_top="1015"
+            sl:scale_width="300"
+            sl:scale_left="835"
+            sl:scale_textsize="45"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/text_blue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00ff0000"
+            android:textStyle="bold"
+            sl:scale_height="300"
+            sl:scale_top="1075"
+            sl:scale_width="300"
+            sl:scale_left="835"
+            sl:scale_textsize="45"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/text_tether"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00ff0000"
+            android:textStyle="bold"
+            sl:scale_height="300"
+            sl:scale_top="1130"
+            sl:scale_width="300"
+            sl:scale_left="835"
+            sl:scale_textsize="45"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/text_camera"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00ff0000"
+            android:textStyle="bold"
+            sl:scale_height="300"
+            sl:scale_top="1195"
+            sl:scale_width="300"
+            sl:scale_left="835"
+            sl:scale_textsize="45"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/text_record"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00ff0000"
+            android:textStyle="bold"
+            sl:scale_height="300"
+            sl:scale_top="1255"
+            sl:scale_width="300"
+            sl:scale_left="835"
+            sl:scale_textsize="45"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+    </com.ssomai.android.scalablelayout.ScalableLayout>
+
+
+    <com.ssomai.android.scalablelayout.ScalableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        sl:scale_base_height="480"
+        sl:scale_base_width="1080">
+
+        <Button
+            android:id="@+id/CheckButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#aeacb1"
+            android:textColor="#ffff"
+            sl:scale_height="350"
+            sl:scale_left="0"
+            sl:scale_top="1390"
+            sl:scale_width="520"
+            sl:scale_textsize="90"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <Button
+            android:text="설정"
+            android:id="@+id/btn_setting"
+            android:textColor="#ffff"
+            android:background="#aeacb1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            sl:scale_height="165"
+            sl:scale_left="540"
+            sl:scale_top="1390"
+            sl:scale_width="540"
+            sl:scale_textsize="65"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/text_version"
+            android:text=""
+            android:textColor="#ffff"
+            android:background="#aeacb1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            sl:scale_height="165"
+            sl:scale_left="540"
+            sl:scale_top="1580"
+            sl:scale_width="540"
+            sl:scale_textsize="55"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+
+    </com.ssomai.android.scalablelayout.ScalableLayout>
+
+</android.support.constraint.ConstraintLayout>
