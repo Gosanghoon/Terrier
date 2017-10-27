@@ -88,6 +88,9 @@ public class ApplicationManagerFragment extends ListFragment {
 
     public void getAppinfo()
     {
+        /**
+         * @param installTime : 앱이 설치된 시간
+         */
 
         Date installTime;
         pkgm = getActivity().getPackageManager();

@@ -24,6 +24,7 @@ public class WifiScanReceiver extends BroadcastReceiver {
      * WifiSCanReceiver
      * - 출퇴근 기능을 수행 한다.
      * - 주기적으로 와이파이 목록을 스캔하여 해당 MAC주소가 있는지 여부에 따라 출퇴근을 수행한다.
+     * - 현재는 테스트 용도로 SSID(무선 랜 이름)을 이용해서 동작한다.
      */
 
     private Boolean           flag = false;

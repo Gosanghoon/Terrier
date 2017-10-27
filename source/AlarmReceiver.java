@@ -13,7 +13,7 @@ import android.util.Log;
 public class AlarmReceiver extends BroadcastReceiver {
     /**
      * 주기적으로 서버에 GPS 정보를 보내기 위한 AlarmReceiver.class
-     *
+     * 알람을 리시브 하면 서버에 현재 위치정보를 전송한다.
      */
     Gps gps;
     HttpsConnection ht;
@@ -23,7 +23,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     String serial;
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(Context context, Intent intent){
         Log.d("알람","리시브");
         ht = new HttpsConnection();
         gps = new Gps(context);

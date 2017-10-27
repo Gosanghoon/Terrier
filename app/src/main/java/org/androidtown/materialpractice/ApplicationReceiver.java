@@ -27,6 +27,12 @@ import static org.androidtown.materialpractice.SHA.setSHA;
 
 public class ApplicationReceiver extends BroadcastReceiver {
 
+    /**
+     * ApplicationReceiver
+     * 기기내 설치된 앱들의 액션(새로운 앱 설치 , 기존 앱 업데이트 , 기존 앱 삭제)이 감지되면
+     * 해당 내용을 서버에 전송한다.
+     */
+
     private static final String TAG = "Observer";
     private HttpsConnection ht;
     private SharedPreferences userinfo;
@@ -61,6 +67,7 @@ public class ApplicationReceiver extends BroadcastReceiver {
         if(resultAction[3].equals("PACKAGE_REMOVED"))
         {
             /**
+             * 액션이 삭제일때
              * 액션과 데이터만 보내주자.
              */
             ht.sendAppInfo("https://58.141.234.126:55356/process/appupdate",userinfo.getString("Id","fail"),resultAction[3],resultData[1]);
@@ -68,6 +75,7 @@ public class ApplicationReceiver extends BroadcastReceiver {
         else
         {
             /**
+             * 삭제가 아니라면
              * 액션과 데이터 , 그 다음 앱 정보들 보내주자.
              */
             sendAppInfo(context,resultAction[3],resultData[1]);
