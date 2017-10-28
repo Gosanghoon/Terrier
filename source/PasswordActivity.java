@@ -52,6 +52,7 @@ public class PasswordActivity extends AppCompatActivity {
     private String EM;
     private String uuid;
     private PasswordRecovery pp;
+    private int logincheck;
 
 
     @Override
@@ -187,7 +188,13 @@ public class PasswordActivity extends AppCompatActivity {
                 Toast.makeText(this, "30초뒤에 다시눌러주세요", Toast.LENGTH_SHORT).show();
                 break;
             default:
+                logincheck++;
                 Toast.makeText(getApplicationContext(), "비밀번호가 틀렸습니다", Toast.LENGTH_SHORT).show();
+                if(logincheck == 2)
+                {
+                    Intent intent = new Intent(PasswordActivity.this,CaptureActivity.class);
+                    startActivity(intent);
+                }
                 break;
         }
     }
