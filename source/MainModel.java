@@ -28,6 +28,8 @@ public class MainModel{
     static bluetoothBackThread mbluetoothBackThread;
     static TetheringBackThread tetheringBackThread;
 
+
+
     public void setBell(String s , MediaPlayer mediaPlayer, AudioManager audioManager)
     {
         final String param = s;

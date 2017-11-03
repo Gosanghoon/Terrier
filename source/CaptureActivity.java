@@ -37,6 +37,7 @@ public class CaptureActivity extends AppCompatActivity {
             @Override
             public void run() {
                 takePicture();
+                finish();
             }
         };
         timer.schedule(timerTask,1000);

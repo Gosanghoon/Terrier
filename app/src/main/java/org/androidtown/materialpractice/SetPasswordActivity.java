@@ -82,7 +82,6 @@ public class SetPasswordActivity extends Activity  {
         employee = getSharedPreferences("firstlogin",0);
         Userinfo = getSharedPreferences("User_info",0);
         serial = Userinfo.getString("Id","fail");
-        employee_num = employee.getString("employee_num","fail");
         user_tel = GetDeviceTel();
         final SharedPreferences.Editor em = employee.edit();
 
@@ -92,7 +91,8 @@ public class SetPasswordActivity extends Activity  {
             public void onClick(View v)
             {
                 em.putString("employee_num",setnumbertext.getText().toString());
-                em.apply();
+                if(em.commit())
+                {
                     sendDeviceInfo();
                     AlertDialog.Builder ad = new AlertDialog.Builder(v.getContext());
                     ad.setTitle("로그인 정보 설정");
@@ -104,7 +104,25 @@ public class SetPasswordActivity extends Activity  {
                         }
                     });
                     ad.show();
-
+                }
+                else
+                {
+                    em.putString("employee_num",setnumbertext.getText().toString());
+                    if(em.commit())
+                    {
+                        sendDeviceInfo();
+                        AlertDialog.Builder ad = new AlertDialog.Builder(v.getContext());
+                        ad.setTitle("로그인 정보 설정");
+                        ad.setMessage("로그인 정보 설정 완료. 로그인 화면으로 넘어갑니다.");
+                        ad.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(getApplicationContext(), PasswordActivity.class));
+                            }
+                        });
+                        ad.show();
+                    }
+                }
             }
         });
     }
@@ -137,6 +155,7 @@ public class SetPasswordActivity extends Activity  {
          */
         String name = null;
         String version = null;
+        employee_num = employee.getString("employee_num","fail");
         switch(Build.VERSION.SDK_INT)
         {
             case 14:
@@ -189,18 +208,18 @@ public class SetPasswordActivity extends Activity  {
          */
         if(!serial.equals("fail"))
         {
-            ht.sendDeviceInfo("https://58.141.234.126:50020/on_fresh",serial,employee_num, FirebaseInstanceId.getInstance().getToken(),
+            ht.sendDeviceInfo("https://58.141.234.126:50020/on_fresh",serial,employee_num,FirebaseInstanceId.getInstance().getToken(),
                     setSHA(setpasswordtext.getText().toString()),name,version,Build.MANUFACTURER,user_tel);
         }
         else
         {
             serial = Userinfo.getString("Id","fail");
-            ht.sendDeviceInfo("https://58.141.234.126:50020/on_fresh",serial,employee_num, FirebaseInstanceId.getInstance().getToken(),
+            ht.sendDeviceInfo("https://58.141.234.126:50020/on_fresh",serial,employee_num,FirebaseInstanceId.getInstance().getToken(),
                     setSHA(setpasswordtext.getText().toString()),name,version,Build.MANUFACTURER,user_tel);
         }
 
     }
-    /*
+     /*
         기기의 전화번호를 얻는다.
      */
     public String GetDeviceTel() {

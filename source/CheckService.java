@@ -15,6 +15,11 @@ import android.support.annotation.Nullable;
 
 public class CheckService extends Service {
 
+    /**
+     * CheckService
+     * 출퇴근 기능을 수행하는 서비스
+     */
+
     private WifiScanReceiver   mWifiScanReceiver;
     static WifiManager         wifiManager;
     ConnectivityManager manager;
@@ -44,6 +49,15 @@ public class CheckService extends Service {
     @SuppressWarnings("WrongConstant")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        /**
+         * 동작방식
+         *  인텐트에 액션을 추가해서 WifiScanReceiver라는 브로드캐스트 리시버에 전송한다.
+         *
+         *  @param wifiManager : 와이파이 스캔을 하기 위한 와이파이 매니저
+         *  @param mWifiScanReceiver : WifiScanReceiver
+         *
+         */
 
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         manager = (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -42,6 +42,12 @@ import gun0912.tedbottompicker.TedBottomPicker;
  */
 
 public class BackupImgFragment extends Fragment {
+
+    /**
+     * BackupImgFragment
+     * 기기내 이미지(다운로드 가능),연락처를 백업하는 기능을 한다.
+     */
+
     private View view;
     private HttpsConnection ht = new HttpsConnection();
     private SharedPreferences Userinfo;
@@ -67,9 +73,11 @@ public class BackupImgFragment extends Fragment {
         Button all = (Button)view.findViewById(R.id.all_btn);
         Button allDown = (Button)view.findViewById(R.id.all_down_btn);
         Button all_number = (Button)view.findViewById(R.id.all_number_btn);
-
         Userinfo = getActivity().getSharedPreferences("User_info",0);
 
+        /**
+         * 프래그먼트 뒤로가기
+         */
         view.setFocusableInTouchMode(true);
         view.requestFocus();
         view.setOnKeyListener(new View.OnKeyListener() {
@@ -89,6 +97,11 @@ public class BackupImgFragment extends Fragment {
             }
         });
 
+
+
+        /**
+         * 사용자가 연락처를 업로드 하겠다고 하는 경우
+         */
         all_number.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -124,11 +137,13 @@ public class BackupImgFragment extends Fragment {
             }
         });
 
+        /**
+         * 사용자가 이미지를 선택해서 업로드 하겠다고 하는 경우
+         */
         choice.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
-
                 AlertDialog.Builder alert_confirm = new AlertDialog.Builder(getActivity());
                 alert_confirm.setMessage("업로드 하시겠습니까?").setCancelable(false).setPositiveButton("확인",
                         new DialogInterface.OnClickListener() {
@@ -149,6 +164,9 @@ public class BackupImgFragment extends Fragment {
             }
         });
 
+        /**
+         * 사용자가 모든 이미지를 업로드 하겠다고 하는 경우
+         */
         all.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -183,7 +201,9 @@ public class BackupImgFragment extends Fragment {
                 alert.show();
             }
         });
-
+        /**
+         * 사용자가 서버에 업로드 한 모든 이미지를 다운로드 하겠다고 하는경우
+         */
         allDown.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -209,8 +229,53 @@ public class BackupImgFragment extends Fragment {
             }
         });
 
+        String backupFlag = getArguments().getString("Backup");
+        if(backupFlag.equals("Img"))
+        {
+            ImgReceive();
+        }
+        else
+        {
+            NumberReceive();
+        }
+
         return view;
     }
+
+    public void NumberReceive()
+    {
+        ProgressDialog("up");
+        dialog.setMessage("연락처 업로드 중");
+        Thread thread = new Thread(new Runnable()
+        {
+            @Override
+            public void run() {
+                getUserContact();
+            }
+        });
+        thread.start();
+    }
+
+    public void ImgReceive()
+    {
+        ProgressDialog("up");
+        Thread thread = new Thread(new Runnable()
+        {
+            @Override
+            public void run() {
+                List<Uri> imglist = fetchAllImages();
+                copyImage(imglist);
+                getActivity().finish();
+            }
+        });
+        thread.start();
+    }
+
+
+    /**
+     * void getUserContact()
+     * ContentProvider를 이용해 기기내 저장된 연락처(이름,번호,이메일)를 서버에 백업한다.
+     */
 
     public void getUserContact()
     {
@@ -295,6 +360,12 @@ public class BackupImgFragment extends Fragment {
         }
     }
 
+    /**
+     * copyImage()
+     * fetchAllImage()의 결과값으로 이미지의 Uri가 들어있는 리스트를 이용하여
+     * 리스트에 들어있는 순서대로 서버에 하나씩 전송한다.
+     */
+
     public void copyImage(List<Uri> list)
     {
         final List<Uri> List = list;
@@ -334,6 +405,12 @@ public class BackupImgFragment extends Fragment {
             }
         }
     }
+
+    /**
+     * fetchAllImages()
+     * ContentProvider를 이용하여 기기내 저장된 이미지들의 Uri를 리스트에 저장 후 리스트를 반환한다.
+     *
+     */
 
     List<Uri> fetchAllImages()
     {
@@ -375,6 +452,12 @@ public class BackupImgFragment extends Fragment {
         return result;
     }
 
+    /**
+     * getGallary()
+     * 사용자가 이미지를 선택해서 올릴 경우 갤러리를 보여준다.
+     * 오픈소스 사용
+     * https://github.com/ParkSangGwon/TedBottomPicker
+     */
     private void getGallary()
     {
         TedBottomPicker bottomSheetDialogFragment = new TedBottomPicker.Builder(getActivity().getApplicationContext())

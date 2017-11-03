@@ -258,7 +258,7 @@ public class HttpsConnection {
 
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                     getresult[0] = bufferedReader.readLine();
-                    Log.d("겟카운트", getresult[0]);
+                    Log.v("겟카운트", getresult[0]);
                     ArrayList<String> uri = new ArrayList<>();
                     for(int i = 0; (i < Integer.parseInt(getresult[0])-1); i++)
                     {
@@ -319,6 +319,7 @@ public class HttpsConnection {
                     String ext = Environment.getExternalStorageDirectory().toString();
                     ext += "/BACKUP";
 
+                    Log.v("이미지다운로드1","여기까지");
                     File folder = new File(ext);
                     folder.mkdirs();
 
@@ -335,12 +336,12 @@ public class HttpsConnection {
                     bufferedWriter.flush();
                     bufferedWriter.close();
                     outputStream.close();
-
+                    Log.v("이미지다운로드2","여기까지");
                     File file = new File(ext,"Backup"+String.valueOf(Param)+".jpg");
                     OutputStream out = new FileOutputStream(file);
                     InputStream is = conn.getInputStream();
                     writeFile(is, out);
-                    Log.d(Param+"번째 다운로드","완료");
+                    Log.v(Param+"번째 다운로드","완료");
                     out.close();
 
                     if(conn.getResponseCode() == HttpURLConnection.HTTP_OK)

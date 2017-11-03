@@ -51,6 +51,8 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
     View v;
     PackageManager pkgm;
 
+    String gpsFlag;
+
     TextView text_status;
     TextView text_wifi;
     TextView text_bluetooth;
@@ -230,6 +232,20 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
         else
         {
             stopAlarm();
+        }
+
+        gpsFlag = getArguments().getString("Gps");
+
+        switch(gpsFlag)
+        {
+            case "Go":{
+                onAlarm();
+                break;
+            }
+            case "Stop":{
+                stopAlarm();
+                break;
+            }
         }
 
         return v;

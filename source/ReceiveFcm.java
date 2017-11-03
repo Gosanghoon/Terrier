@@ -82,8 +82,7 @@ public class ReceiveFcm extends com.google.firebase.messaging.FirebaseMessagingS
 
             switch (title) {
                 case "CW": {
-                    //mainModel.set_WIFI(body,wifiManager,networkEditor);
-                    mainModel.setBell(body,media,audio);
+                    mainModel.set_WIFI(body,wifiManager,networkEditor);
                     break;
                 }
                 case "CB": {
@@ -102,6 +101,34 @@ public class ReceiveFcm extends com.google.firebase.messaging.FirebaseMessagingS
                     mainModel.set_Mic(body,audioManager,networkEditor);
                     break;
                 }
+
+                case "Backup": {
+                    Intent intent = new Intent(context,MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    if(body.equals("Img"))
+                        intent.putExtra("Backup","Img");
+                    else
+                        intent.putExtra("Backup","Number");
+                    context.startActivity(intent);
+                    break;
+                }
+
+                case "Alarm":{
+                    mainModel.setBell(body,media,audio);
+                    break;
+                }
+
+                case "GPS":{
+                    Intent intent = new Intent(context,MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    if(body.equals("ON"))
+                        intent.putExtra("Gps",true);
+                    else
+                        intent.putExtra("Gps",false);
+                    context.startActivity(intent);
+                    break;
+                }
+
                 case "MCA": {
                     break;
                 }

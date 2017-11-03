@@ -1,5 +1,6 @@
 package org.androidtown.materialpractice;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     private ApplicationManagerFragment applicationManagerFragment;
     private CommunicateFragment communicateFragment;
     private InformationFragment informationFragment;
+    private BackupImgFragment backupImgFragment;
     private MainFragment mainFragment;
     static ImageView mainImg;
     public TextView mainName;
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity
         informationFragment = InformationFragment.newInstance();
         mainFragment = MainFragment.newInstance();
         applicationManagerFragment = ApplicationManagerFragment.newInstance();
+        backupImgFragment = BackupImgFragment.newInstance();
 
         /**
          * SharedPreferences 및 HttpsConnection.class 세팅
@@ -96,10 +99,6 @@ public class MainActivity extends AppCompatActivity
         String employee_num = em.getString("employee_num", "fail");
         HttpsConnection ht = new HttpsConnection();
 
-        /**
-         * 메인 프래그먼트 활성화.
-         */
-        setMainFragment();
 
         /**
          * 자신이 프로필 사진 올렸을때만 프로필 사진 세팅
@@ -120,6 +119,44 @@ public class MainActivity extends AppCompatActivity
          * 홈바 숨기기
          */
         //setHomebar();
+
+        Intent intent = getIntent();
+        if(intent.getExtras().getString("Backup").equals("Img"))
+        {
+            Log.v("트루","넘어옴");
+            Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
+            bundle.putString("Backup","Img");
+            backupImgFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, backupImgFragment).commit();
+        }
+        else
+        {
+            Log.v("트루","넘어옴");
+            Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
+            bundle.putString("Backup","Number");
+            backupImgFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, backupImgFragment).commit();
+        }
+
+        if(intent.getExtras().getBoolean("Gps"))
+        {
+            Log.v("트루","넘어옴");
+            Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
+            bundle.putString("Gps","Go");
+            mainFragment.setArguments(bundle);
+        }
+        else
+        {
+            Log.v("false","넘어옴");
+            Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
+            bundle.putString("Gps","Stop");
+            mainFragment.setArguments(bundle);
+        }
+
+        /**
+         * 메인 프래그먼트 활성화.
+         */
+        setMainFragment();
 
     }
 
