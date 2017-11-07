@@ -33,7 +33,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         longitude = setGpsInfo("longitude");
         ht.sendGPS("https://58.141.234.126:55356/process/locationadd",serial,latitude,
                     longitude);
-
     }
 
     public double setGpsInfo(String s)

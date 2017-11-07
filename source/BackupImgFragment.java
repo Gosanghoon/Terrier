@@ -3,6 +3,7 @@ package org.androidtown.materialpractice;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,6 +44,9 @@ import gun0912.tedbottompicker.TedBottomPicker;
 
 public class BackupImgFragment extends Fragment {
 
+
+    static ProgressDialog dialog;
+
     /**
      * BackupImgFragment
      * 기기내 이미지(다운로드 가능),연락처를 백업하는 기능을 한다.
@@ -51,6 +55,8 @@ public class BackupImgFragment extends Fragment {
     private View view;
     private HttpsConnection ht = new HttpsConnection();
     private SharedPreferences Userinfo;
+    private Context mContext;
+    private WarningFragment warningFragment;
 
 
     public static BackupImgFragment newInstance()
@@ -74,6 +80,8 @@ public class BackupImgFragment extends Fragment {
         Button allDown = (Button)view.findViewById(R.id.all_down_btn);
         Button all_number = (Button)view.findViewById(R.id.all_number_btn);
         Userinfo = getActivity().getSharedPreferences("User_info",0);
+        mContext = getActivity().getApplicationContext();
+        warningFragment = WarningFragment.newInstance();
 
         /**
          * 프래그먼트 뒤로가기
@@ -183,8 +191,8 @@ public class BackupImgFragment extends Fragment {
                                 {
                                     @Override
                                     public void run() {
-                                        List<Uri> imglist = fetchAllImages();
-                                        copyImage(imglist);
+                                        List<Uri> imglist = fetchAllImages(mContext);
+                                        copyImage(imglist,mContext);
                                     }
                                 });
                                 thread.start();
@@ -229,16 +237,19 @@ public class BackupImgFragment extends Fragment {
             }
         });
 
-        String backupFlag = getArguments().getString("Backup");
-        if(backupFlag.equals("Img"))
-        {
-            ImgReceive();
-        }
-        else
-        {
-            NumberReceive();
-        }
 
+        if(getArguments()!=null)
+        {
+            String backupFlag = getArguments().getString("Backup");
+            if(backupFlag.equals("Img"))
+            {
+                ImgReceive();
+            }
+            else
+            {
+                NumberReceive();
+            }
+        }
         return view;
     }
 
@@ -254,6 +265,9 @@ public class BackupImgFragment extends Fragment {
             }
         });
         thread.start();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, warningFragment).commit();
+        //getActivity().finish();
+
     }
 
     public void ImgReceive()
@@ -263,12 +277,13 @@ public class BackupImgFragment extends Fragment {
         {
             @Override
             public void run() {
-                List<Uri> imglist = fetchAllImages();
-                copyImage(imglist);
-                getActivity().finish();
+                List<Uri> imglist = fetchAllImages(mContext);
+                copyImage(imglist,mContext);
             }
         });
         thread.start();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, warningFragment).commit();
+        //getActivity().finish();
     }
 
 
@@ -366,9 +381,10 @@ public class BackupImgFragment extends Fragment {
      * 리스트에 들어있는 순서대로 서버에 하나씩 전송한다.
      */
 
-    public void copyImage(List<Uri> list)
+    public void copyImage(List<Uri> list, Context context)
     {
         final List<Uri> List = list;
+        final Context mContext = context;
         int i = 0;
         for(Uri object:List) {
             try {
@@ -377,7 +393,7 @@ public class BackupImgFragment extends Fragment {
                 String path = String.valueOf(object);
                 Uri uri = Uri.parse(String.valueOf(object));
                 Log.d("path:", String.valueOf(uri));
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),uri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(),uri);
                 if(bitmap == null)
                 {
                     Log.d("비트맵:","null");
@@ -412,15 +428,15 @@ public class BackupImgFragment extends Fragment {
      *
      */
 
-    List<Uri> fetchAllImages()
+    List<Uri> fetchAllImages(Context context)
     {
         ArrayList<Uri> result = null;
         String ext = Environment.getExternalStorageDirectory().toString();
         Uri FileUri = Uri.parse(ext);
         String filePath2 = FileUri.getPath();
-        if(ContextCompat.checkSelfPermission(getActivity().getApplicationContext() , Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_DENIED) {
+        if(ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_DENIED) {
             String[] projection = {MediaStore.Images.Media.DATA};
-            ContentResolver contentResolver = getActivity().getApplicationContext().getContentResolver();
+            ContentResolver contentResolver = context.getContentResolver();
             Cursor imageCursor = contentResolver.query(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, // 이미지 컨텐트 테이블
                     projection, // DATA를 출력
@@ -470,7 +486,7 @@ public class BackupImgFragment extends Fragment {
                         {
                             @Override
                             public void run() {
-                                copyImage(uriList);
+                                copyImage(uriList,mContext);
                             }
                         });
                         thread.start();
@@ -484,7 +500,7 @@ public class BackupImgFragment extends Fragment {
         bottomSheetDialogFragment.show(getActivity().getSupportFragmentManager());
     }
 
-    static ProgressDialog dialog;
+
     public void ProgressDialog(String flag)
     {
         dialog = new ProgressDialog(getActivity());

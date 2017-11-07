@@ -63,6 +63,7 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
     TextView text_version;
 
     private MainFragmentPresenter presenter;
+    private WarningFragment warningFragment;
     private InformationFragment informationFragment;
     private CommunicateFragment communicateFragment;
     private BackupImgFragment backupImgFragment;
@@ -97,6 +98,7 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
         networkEditor = networkFlag.edit();
 
         loginHistory = getActivity().getSharedPreferences("login_history",0);
+        SharedPreferences.Editor lh = loginHistory.edit();
 
         Userinfo = getActivity().getSharedPreferences("User_info",0);
         al = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
@@ -123,9 +125,18 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
         backupImgFragment = BackupImgFragment.newInstance();
         settingFragment = SettingFragment.newInstance();
         resultFragment = ResultFragment.newInstance();
+        warningFragment = WarningFragment.newInstance();
 
         presenter = new MainFragmentPresenterImpl(MainFragment.this,serial);
         presenter.setView(this);
+
+        if(loginHistory.getString("FirstSetup","fail").equals("fail"))
+        {
+            ApplicationCheckTask applicationCheckTask = new ApplicationCheckTask("First");
+            applicationCheckTask.execute();
+            lh.putString("FirstSetup","true");
+            lh.apply();
+        }
 
         img_information.setOnClickListener(new View.OnClickListener()
         {
@@ -154,7 +165,7 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
                             @Override
                             public void onClick(DialogInterface param, int which) {
 
-                                ApplicationCheckTask applicationCheckTask = new ApplicationCheckTask();
+                                ApplicationCheckTask applicationCheckTask = new ApplicationCheckTask("No");
                                 applicationCheckTask.execute();
                                 //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, resultFragment).commit();
                                 text_check_day.setText(setTime());
@@ -217,7 +228,7 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
 
         setInit();
 
-        if(loginHistory.getBoolean("history",false))
+        if(loginHistory.getBoolean("Check",false))
         {
             if(gps.isGetLocation())
             {
@@ -234,20 +245,24 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
             stopAlarm();
         }
 
-        gpsFlag = getArguments().getString("Gps");
 
-        switch(gpsFlag)
+
+        if(getArguments() != null)
         {
-            case "Go":{
-                onAlarm();
-                break;
+            gpsFlag = getArguments().getString("Gps");
+            switch(gpsFlag)
+            {
+                case "Go":{
+                    onAlarm();
+                    break;
+                }
+                case "Stop":{
+                    stopAlarm();
+                    break;
+                }
             }
-            case "Stop":{
-                stopAlarm();
-                break;
-            }
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, warningFragment).commit();
         }
-
         return v;
     }
 
@@ -282,32 +297,68 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
         if(wifi.equals("true"))
             text_wifi.setText("허용");
         else
-            text_wifi.setText("차단");
+        {
+            if(wifi.equals("false"))
+            {
+                text_wifi.setText("차단");
+            }
+            else
+                text_wifi.setText("허용");
+        }
 
         if(blue.equals("true"))
             text_bluetooth.setText("허용");
         else
-            text_bluetooth.setText("차단");
+        {
+            if(blue.equals("false"))
+            {
+                text_bluetooth.setText("차단");
+            }
+            else
+                text_bluetooth.setText("허용");
+        }
 
         if(tether.equals("true"))
             text_tether.setText("허용");
         else
-            text_tether.setText("차단");
+        {
+            if(tether.equals("false"))
+            {
+                text_tether.setText("차단");
+            }
+            else
+                text_tether.setText("허용");
+        }
 
         if(camera.equals("true"))
             text_camera.setText("허용");
         else
-            text_camera.setText("차단");
+        {
+            if(camera.equals("false"))
+            {
+                text_camera.setText("차단");
+            }
+            else
+                text_camera.setText("허용");
+        }
 
         if(record.equals("true"))
             text_record.setText("허용");
         else
-            text_record.setText("차단");
+        {
+            if(record.equals("false"))
+            {
+                text_record.setText("차단");
+            }
+            else
+                text_record.setText("허용");
+        }
+
         text_check_day.setText(networkFlag.getString("last_check","fail"));
 
         loginHistory = getActivity().getSharedPreferences("login_history",0);
 
-        if(loginHistory.getBoolean("history",false))
+        if(loginHistory.getBoolean("Check",false))
         {
             text_version.setText("출근");
         }
@@ -335,18 +386,26 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
     {
         Intent intent = new Intent(getActivity().getApplicationContext(),AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(getActivity().getApplicationContext(),1,intent,0);
-
         al.cancel(pi);
+        pi.cancel();
     }
+
 
     /*
         ApplicationCheckTask - 기기 검사(루팅 체크, 설치된 앱 변조체크)를 수행하는 AsyncTask
+        flag가 No라면 정상적인 기기검사
+        flag가 First라면 최초 설치 후 서버에 앱 정보만 보낸다.
      */
-
     public class ApplicationCheckTask extends AsyncTask<Void,Void,Void>
     {
         private ProgressDialog progressDialog;
         private String serial;
+        private String flag;
+
+        ApplicationCheckTask(String flag)
+        {
+            this.flag = flag;
+        }
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -356,7 +415,6 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
              * @param jsonArray : 기기내 앱 정보들을 담을 JSONArray
              * @param pkgm : 기기내 앱 정보들을 뽑기 위한 PackageManager
              * @param Appinfos : 앱 정보들이 저장된 리스트
-             *
              */
             serial = Userinfo.getString("Id","fail");
             JSONArray jsonArray = new JSONArray();
@@ -411,26 +469,47 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.View
             }
             if(!serial.equals("fail"))
             {
-                presenter.sendAppInfo("https://58.141.234.126:55356/process/appmanage",serial,jsonArray,presenter.checkRooting(),Userinfo);
+                if(flag.equals("No"))
+                {
+                    presenter.sendAppInfo("https://58.141.234.126:55356/process/appmanage",serial,jsonArray,presenter.checkRooting(),Userinfo);
+                }
+                else
+                {
+                    presenter.sendAppInfo("https://58.141.234.126:55356/process/appinitialize",serial,jsonArray);
+                }
             }
             else
             {
                 serial = Userinfo.getString("Id","fail");
-                presenter.sendAppInfo("https://58.141.234.126:55356/process/appmanage",serial,jsonArray,presenter.checkRooting(),Userinfo);
+                if(flag.equals("No"))
+                {
+                    presenter.sendAppInfo("https://58.141.234.126:55356/process/appmanage",serial,jsonArray,presenter.checkRooting(),Userinfo);
+                }
+                else
+                {
+                    presenter.sendAppInfo("https://58.141.234.126:55356/process/appinitialize",serial,jsonArray);
+                }
+
             }
             return null;
         }
 
         @Override
         protected void onPreExecute() {
-            progressDialog = ProgressDialog.show(getActivity(),null,"로딩중....");
+            if(flag.equals("No"))
+            {
+                progressDialog = ProgressDialog.show(getActivity(),null,"로딩중....");
+            }
             super.onPreExecute();
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            progressDialog.dismiss();
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, resultFragment).commit();
+            if(flag.equals("No"))
+            {
+                progressDialog.dismiss();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, resultFragment).commit();
+            }
             super.onPostExecute(aVoid);
         }
     }

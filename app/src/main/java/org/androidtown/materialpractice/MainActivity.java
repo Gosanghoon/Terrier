@@ -120,38 +120,53 @@ public class MainActivity extends AppCompatActivity
          */
         //setHomebar();
 
+
         Intent intent = getIntent();
-        if(intent.getExtras().getString("Backup").equals("Img"))
+        if(intent != null)
         {
-            Log.v("트루","넘어옴");
-            Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
-            bundle.putString("Backup","Img");
-            backupImgFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, backupImgFragment).commit();
-        }
-        else
-        {
-            Log.v("트루","넘어옴");
-            Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
-            bundle.putString("Backup","Number");
-            backupImgFragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, backupImgFragment).commit();
+            if(intent.getExtras() != null)
+            {
+                if(intent.getExtras().getString("Backup")!=null)
+                {
+                    if(intent.getExtras().getString("Backup").equals("Img"))
+                    {
+                        Log.v("이미지","넘어옴");
+                        Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
+                        bundle.putString("Backup","Img");
+                        backupImgFragment.setArguments(bundle);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, backupImgFragment).commit();
+                    }
+                    else
+                    {
+                        Log.v("연락처","넘어옴");
+                        Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
+                        bundle.putString("Backup","Number");
+                        backupImgFragment.setArguments(bundle);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, backupImgFragment).commit();
+                    }
+                }
+                if(intent.getExtras().getString("Gps")!=null)
+                {
+                    if(intent.getExtras().getString("Gps").equals("Go"))
+                    {
+                        Log.v("트루","넘어옴");
+                        Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
+                        bundle.putString("Gps","Go");
+                        mainFragment.setArguments(bundle);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, mainFragment).commit();
+                    }
+                    else
+                    {
+                        Log.v("false","넘어옴");
+                        Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
+                        bundle.putString("Gps","Stop");
+                        mainFragment.setArguments(bundle);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main, mainFragment).commit();
+                    }
+                }
+            }
         }
 
-        if(intent.getExtras().getBoolean("Gps"))
-        {
-            Log.v("트루","넘어옴");
-            Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
-            bundle.putString("Gps","Go");
-            mainFragment.setArguments(bundle);
-        }
-        else
-        {
-            Log.v("false","넘어옴");
-            Bundle bundle = new Bundle(1); //전달할 데이터 개수 1개
-            bundle.putString("Gps","Stop");
-            mainFragment.setArguments(bundle);
-        }
 
         /**
          * 메인 프래그먼트 활성화.

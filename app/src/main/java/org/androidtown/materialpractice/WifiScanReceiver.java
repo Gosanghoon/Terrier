@@ -62,7 +62,7 @@ public class WifiScanReceiver extends BroadcastReceiver {
         scanResult = wifiManager.getScanResults();
         ht = new HttpsConnection();
         macList = new ArrayList<String>();
-        flagHistory = History.getBoolean("history",false);
+        flagHistory = History.getBoolean("Check",false);
 
         /**
          * 스캔 결과에서 MAC주소만 담는 리스트에 MAC주소만 복사.
@@ -108,8 +108,8 @@ public class WifiScanReceiver extends BroadcastReceiver {
                 Context.startActivity(intent);
 
                 Log.d("출근","출근");
-                ht.sendCheckIn("https://58.141.234.126:55356/process/deviceon",Id);
-                ed.putBoolean("history",true);
+                ht.sendCheckIn("https://58.141.234.126:55356/process/deviceonoff",Id);
+                ed.putBoolean("Check",true);
                 ed.apply();
             }
         }
@@ -118,8 +118,8 @@ public class WifiScanReceiver extends BroadcastReceiver {
             if(flagHistory.equals(true))
             {
                 Log.d("퇴근","퇴근");
-                ht.checkout("https://58.141.234.126:55356/process/deviceoff",Id);
-                ed.putBoolean("history",false);
+                ht.checkout("https://58.141.234.126:55356/process/deviceonoff",Id);
+                ed.putBoolean("Check",false);
                 ed.apply();
             }
         }

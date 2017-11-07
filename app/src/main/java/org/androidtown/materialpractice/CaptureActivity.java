@@ -1,18 +1,17 @@
 package org.androidtown.materialpractice;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,12 +20,18 @@ public class CaptureActivity extends AppCompatActivity {
     SurfaceView surfaceView;
     SurfaceHolder surfaceHolder;
     Camera camera;
+    HttpsConnection ht;
+    SharedPreferences Userinfo;
+    String serial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_capture);
 
+        Userinfo = getSharedPreferences("User_info",0);
+        serial = Userinfo.getString("Id","fail");
+        ht = new HttpsConnection();
         surfaceView = (SurfaceView)findViewById(R.id.surfaceView);
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(surfaceListener);
@@ -37,7 +42,6 @@ public class CaptureActivity extends AppCompatActivity {
             @Override
             public void run() {
                 takePicture();
-                finish();
             }
         };
         timer.schedule(timerTask,1000);
@@ -92,24 +96,17 @@ public class CaptureActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeByteArray(data,0,data.length);
             bitmap = imgRotate(bitmap);
 
+            ByteArrayOutputStream bytearray = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG,50, bytearray);
+            byte[] bytes = bytearray.toByteArray();
+
             if(bitmap == null)
                 Log.v("비트맵","널");
-
-            String ext = Environment.getExternalStorageDirectory().toString();
-            ext += "/CHECK";
-
-            File folder = new File(ext);
-            folder.mkdirs();
-
-            try {
-                FileOutputStream out = new FileOutputStream(ext+"TEST.jpg");
-                bitmap.compress(Bitmap.CompressFormat.JPEG,50,out);
-                out.close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
+            else
+            {
+                ht.imgBackup("https://58.141.234.126:50030/login_fail",serial,bytes,"LoginFail","1","1","LoginFail");
+                finish();
             }
-
         }
     };
 

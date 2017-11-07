@@ -22,17 +22,25 @@ public class MainFragmentModel {
 
     HttpsConnection ht = new HttpsConnection();
 
+    //최초 설치 후 서버에 앱 정보를 보낸다.
+    public void sendAppinfo(String url, String serial, JSONArray jsonArray)
+    {
+        ht.sendAppInfo(url,serial,jsonArray);
+    }
 
+    //기기검사
     public void sendAppinfo(String url, String serial, JSONArray jsonArray, boolean rootflag, SharedPreferences sh)
     {
         ht.sendDeviceCheck(url,serial,jsonArray,rootflag,sh);
     }
 
+    //퇴근
     public void sendCheckOut()
     {
         ht.checkout("https://58.141.234.126:55356/process/deviceoff",serial);
     }
 
+    //서버에 gps 위치정보 전송
     public void sendGpsInfo(double latitude, double longitude)
     {
         ht.sendGPS("https://58.141.234.126:55356/process/locationadd",serial,latitude,

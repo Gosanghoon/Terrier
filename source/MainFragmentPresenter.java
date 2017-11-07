@@ -14,6 +14,7 @@ public interface MainFragmentPresenter{
     void sendGpsData(double latitude, double longitude);
     void initialize();
     void sendCheckOut();
+    void sendAppInfo(String s, String serial, JSONArray jsonArray);
     void sendAppInfo(String s, String serial, JSONArray jsonArray, boolean b, SharedPreferences sh);
     boolean checkRooting();
 

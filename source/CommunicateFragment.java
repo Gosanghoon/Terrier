@@ -80,7 +80,7 @@ public class CommunicateFragment extends Fragment implements CommunicatePresente
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://www.terrier.co19.kr"));
+                intent.setData(Uri.parse("http://www.terrier.co19.kr/control"));
                 startActivity(intent);
             }
         });

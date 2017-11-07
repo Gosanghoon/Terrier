@@ -3,6 +3,6 @@
     android:id="@+id/splash_View"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_xhdpi">
+    android:background="@drawable/splash2_xhdpi">
 
 </LinearLayout>

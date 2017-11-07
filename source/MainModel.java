@@ -35,13 +35,14 @@ public class MainModel{
         final String param = s;
         if(param.equals("OFF"))
         {
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,15,0);
-            mediaPlayer.start();
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,7,0);
+            android.os.Process.killProcess(android.os.Process.myPid());
+
         }
         else if(param.equals("ON"))
         {
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,7,0);
-            android.os.Process.killProcess(android.os.Process.myPid());
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC,15,0);
+            mediaPlayer.start();
         }
     }
 
@@ -152,7 +153,7 @@ public class MainModel{
             {
                 wifithread.start();
                 networkEditor.putString("WIFI","false");
-                networkEditor.apply();
+                networkEditor.commit();
             }
         }
         else if(s.equals("ON"))
@@ -161,7 +162,7 @@ public class MainModel{
             {
                 wifithread.interrupt();
                 networkEditor.putString("WIFI","true");
-                networkEditor.apply();
+                networkEditor.commit();
             }
         }
     }

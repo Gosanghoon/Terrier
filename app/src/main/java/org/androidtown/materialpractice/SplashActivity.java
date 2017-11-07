@@ -58,8 +58,6 @@ public class SplashActivity extends Activity {
         FirstLogin = getSharedPreferences("firstlogin", 0);
         Userinfo = getSharedPreferences("User_info",0);
 
-
-
         startService(new Intent(getApplicationContext(),CheckService.class));
 
         boolean hasVisited = FirstLogin.getBoolean("firstflag", false);
@@ -78,7 +76,7 @@ public class SplashActivity extends Activity {
                     /*
                 첫 실행이라면 ->
                 관리자 권한과 앱에 필요한 권한을 요청한다.
-             */
+                    */
                     Toast.makeText(getApplicationContext(), "권한이 완료될때까지 기다려주세요", Toast.LENGTH_SHORT).show();
 
 
@@ -96,7 +94,6 @@ public class SplashActivity extends Activity {
                 /*
                     토큰값이 제대로 들어오는지 테스트.
                  */
-
                     }
                     else
                     {

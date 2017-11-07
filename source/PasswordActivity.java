@@ -131,6 +131,7 @@ public class PasswordActivity extends AppCompatActivity {
             자동 로그인
             출근중이고 로그인을 했다면 다음부터는 비밀번호를 입력하지 않아도 메인화면으로 넘어간다.
          */
+
         if(Loginhistory.getBoolean("history",false))
         {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -179,9 +180,12 @@ public class PasswordActivity extends AppCompatActivity {
         /*
             리턴값이 1이라면 로그인 성공
          */
+        SharedPreferences.Editor ed = Loginhistory.edit();
         switch (data) {
             case "1":
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                ed.putBoolean("history",true);
+                ed.apply();
                 onPause();
                 break;
             case "nno":

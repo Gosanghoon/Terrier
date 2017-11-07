@@ -82,6 +82,9 @@ public class ApplicationReceiver extends BroadcastReceiver {
         }
     }
 
+    /**
+     * 앱이 새로 설치하거나 업데이트 되었을때 어떤 앱이 어떤 액션을 취했는지와 그 앱에 대한 정보를 서버로 전송한다.
+     */
     public void sendAppInfo(Context context , String action , String data) {
         Context Context = context;
         String Action = action;
@@ -97,42 +100,46 @@ public class ApplicationReceiver extends BroadcastReceiver {
         {
             ActivityInfo ai = info.activityInfo;
             JSONObject json = new JSONObject();
-            try
+            if(data.equals(ai.packageName))
             {
-                json.put("name", ai.loadLabel(pkgm).toString());
-                json.put("packagename", ai.packageName);
-            }
-            catch (JSONException e)
-            {
-                e.printStackTrace();
-            }
-            ApplicationInfo tmpInfo = null;
-            try
-            {
-                tmpInfo = pkgm.getApplicationInfo(ai.packageName, PackageManager.GET_META_DATA);
-                long size = new File(tmpInfo.sourceDir).length();
-                json.put("size", size);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            PackageInfo pi = null;
-            try
-            {
-                pi = Context.getPackageManager().getPackageInfo(ai.packageName,0);
-                Signature[] signature = Context.getPackageManager().getPackageInfo(ai.packageName, PackageManager.GET_SIGNATURES).signatures;
-                json.put("version", pi.versionName);
-                for (Signature sig : signature)
+                try
                 {
-                    json.put("signature", setSHA(sig.toString()));
+                    json.put("name", ai.loadLabel(pkgm).toString());
+                    json.put("packagename", ai.packageName);
                 }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+                ApplicationInfo tmpInfo = null;
+                try
+                {
+                    tmpInfo = pkgm.getApplicationInfo(ai.packageName, PackageManager.GET_META_DATA);
+                    long size = new File(tmpInfo.sourceDir).length();
+                    json.put("size", size);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                PackageInfo pi = null;
+                try
+                {
+                    pi = Context.getPackageManager().getPackageInfo(ai.packageName,0);
+                    Signature[] signature = Context.getPackageManager().getPackageInfo(ai.packageName, PackageManager.GET_SIGNATURES).signatures;
+                    json.put("version", pi.versionName);
+                    for (Signature sig : signature)
+                    {
+                        json.put("signature", setSHA(sig.toString()));
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+                jsonArray.put(json);
+                break;
             }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            jsonArray.put(json);
         }
         ht.sendAppInfo("https://58.141.234.126:55356/process/appupdate",userinfo.getString("Id","fail"),Action,Data,jsonArray);
     }

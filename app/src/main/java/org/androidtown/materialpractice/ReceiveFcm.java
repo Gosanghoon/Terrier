@@ -32,12 +32,15 @@ public class ReceiveFcm extends com.google.firebase.messaging.FirebaseMessagingS
     private ComponentName           lock_componentName;
     private SharedPreferences       networkFlag;
     private SharedPreferences.Editor networkEditor;
+    private SharedPreferences.Editor loginHistoryEditor;
+    private SharedPreferences       loginHistory;
     private AudioManager            audioManager;
     private Context                 context;
     private WifiManager             wifiManager;
     private BluetoothAdapter        mBluetoothAdapter;
     private MediaPlayer             media;
     private AudioManager            audio;
+
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage)
@@ -46,6 +49,8 @@ public class ReceiveFcm extends com.google.firebase.messaging.FirebaseMessagingS
         dmg = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
         componentName = new ComponentName(getApplicationContext(), CameraDisableReceiver.class);
         lock_componentName = new ComponentName(getApplicationContext(), LockScreenReceiver.class);
+        loginHistory = getSharedPreferences("login_history",0);
+        loginHistoryEditor = loginHistory.edit();
         networkFlag = getSharedPreferences("NetworkFlag",0);
         networkEditor = networkFlag.edit();
         audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
@@ -54,14 +59,11 @@ public class ReceiveFcm extends com.google.firebase.messaging.FirebaseMessagingS
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         audio = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
-
         media = new MediaPlayer();
-
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-
         try{
             media.setDataSource(this,uri);
-            media.setLooping(false);
+            media.setLooping(true);
             media.prepare();
         }catch(Exception e)
         {
@@ -102,6 +104,24 @@ public class ReceiveFcm extends com.google.firebase.messaging.FirebaseMessagingS
                     break;
                 }
 
+                case "출근":{
+                    mainModel.set_Camera(body,dmg,componentName,networkEditor);
+                    loginHistoryEditor.putBoolean("Check",true);
+                    loginHistoryEditor.apply();
+                    Intent intent  = new Intent(this,SplashActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    break;
+                }
+
+                case "퇴근":{
+                    mainModel.set_Camera(body,dmg,componentName,networkEditor);
+                    loginHistoryEditor.putBoolean("Check",false);
+                    loginHistoryEditor.putBoolean("history",false);
+                    loginHistoryEditor.apply();
+                    break;
+                }
+
                 case "Backup": {
                     Intent intent = new Intent(context,MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -114,17 +134,18 @@ public class ReceiveFcm extends com.google.firebase.messaging.FirebaseMessagingS
                 }
 
                 case "Alarm":{
+                    Log.v("알람","fcm 수신");
                     mainModel.setBell(body,media,audio);
                     break;
                 }
 
-                case "GPS":{
+                case "Gps":{
                     Intent intent = new Intent(context,MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     if(body.equals("ON"))
-                        intent.putExtra("Gps",true);
+                        intent.putExtra("Gps","Go");
                     else
-                        intent.putExtra("Gps",false);
+                        intent.putExtra("Gps","Stop");
                     context.startActivity(intent);
                     break;
                 }

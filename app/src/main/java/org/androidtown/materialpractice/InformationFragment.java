@@ -21,6 +21,7 @@ import android.widget.ListView;
 
 public class InformationFragment extends Fragment {
 
+    ApplicationManagerFragment applicationManagerFragment;
 
     public static InformationFragment newInstance()
     {
@@ -40,6 +41,8 @@ public class InformationFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_information,null);
         //ArrayAdapter Adapter = new ArrayAdapter(getActivity(),android.R.layout.simple_list_item_1,LIST_MENU);
+
+        applicationManagerFragment = ApplicationManagerFragment.newInstance();
 
         Fragment newFragment2 = new Fragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
@@ -77,7 +80,7 @@ public class InformationFragment extends Fragment {
         adapter.addItem(ContextCompat.getDrawable(getActivity(),R.drawable.ic_phonelink_lock_black_36dp),
                 "    암호 재설정                                        ","      암호를 설정하세요                ");
         adapter.addItem(ContextCompat.getDrawable(getActivity(),R.drawable.ic_gps_not_fixed_black_24dp),
-                "    분실 관리                                        ","      분실시 관리                     ");
+                "    애플리케이션 관리                                        ","      앱 목록 및 삭제                     ");
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -90,18 +93,22 @@ public class InformationFragment extends Fragment {
                 String descStr = item.getDesc();
                 Drawable iconDrawable = item.getIcon();
 
-                if(position == 0)
+                switch(position)
                 {
-                    Bundle extras = new Bundle();
-                    extras.putString("reset","reset");
+                    case 0:{
+                        Bundle extras = new Bundle();
+                        extras.putString("reset","reset");
 
-                    Intent intent = new Intent(getContext(),ChangePasswordActivity.class);
-                    intent.putExtras(extras);
-                    startActivity(intent);
-
+                        Intent intent = new Intent(getContext(),ChangePasswordActivity.class);
+                        intent.putExtras(extras);
+                        startActivity(intent);
+                        break;
+                    }
+                    case 1:{
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fl_activity_main,applicationManagerFragment).commit();
+                        break;
+                    }
                 }
-
-
             }
         });
         return view;

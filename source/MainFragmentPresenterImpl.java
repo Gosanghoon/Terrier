@@ -42,6 +42,11 @@ public class MainFragmentPresenterImpl implements MainFragmentPresenter {
     public void sendCheckOut() { model.sendCheckOut(); }
 
     @Override
+    public void sendAppInfo(String url, String serial, JSONArray jsonArray) {
+        model.sendAppinfo(url,serial,jsonArray);
+    }
+
+    @Override
     public void sendAppInfo(String url, String serial, JSONArray jsonArray, boolean rootflag, SharedPreferences sh) {
         model.sendAppinfo(url,serial,jsonArray,rootflag,sh);
     }

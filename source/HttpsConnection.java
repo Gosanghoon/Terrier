@@ -50,6 +50,68 @@ import static org.androidtown.materialpractice.Login.setValue;
 
 public class HttpsConnection {
 
+    public void sendRemove(String url, String serial)
+    {
+        final String paramURL = url;
+        final String Serial = serial;
+
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                HttpURLConnection conn = null;
+                String urlString = paramURL;
+
+                try{
+                    URL url = new URL(urlString);
+                    trustAllHosts();
+
+                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection)url.openConnection();
+                    httpsURLConnection.setHostnameVerifier(new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String hostname, SSLSession session) {
+                            return true;
+                        }
+                    });
+
+                    conn = httpsURLConnection;
+                    conn.setRequestMethod("POST");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.setRequestProperty("Content-Type","application/json");
+                    conn.connect();
+
+                    OutputStream outputStream = conn.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    JSONObject json = new JSONObject();
+
+                    try{
+                        json.put("Id",Serial);
+                        json.put("flag","관리자 권한 해제");
+                    }catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    bufferedWriter.write(json.toString());
+                    bufferedWriter.close();
+                    outputStream.close();
+
+                    if(conn.getResponseCode() == HttpURLConnection.HTTP_OK)
+                    {
+                        Log.d("정보 전송 : ", "성공");
+                    }
+                    else
+                        Log.d("정보 전송 : ", "실패");
+
+                    conn.disconnect();
+                }catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread.start();
+    }
+
     public void setName(String url, String em , TextView name , TextView jik)
     {
         final String paramURL = url;
@@ -260,7 +322,7 @@ public class HttpsConnection {
                     getresult[0] = bufferedReader.readLine();
                     Log.v("겟카운트", getresult[0]);
                     ArrayList<String> uri = new ArrayList<>();
-                    for(int i = 0; (i < Integer.parseInt(getresult[0])-1); i++)
+                    for(int i = 0; (i < Integer.parseInt(getresult[0])); i++)
                     {
                         uri.add("https://58.141.234.126:50030/download");
                     }
@@ -724,8 +786,8 @@ public class HttpsConnection {
                     {
                         Log.d("전송받은거","200");
                     }
-                    else
-                        conn.disconnect();
+
+                    conn.disconnect();
 
                 }
                 catch(Exception e)
@@ -744,6 +806,8 @@ public class HttpsConnection {
         thread.start();
         if(!Flag.equals("profile"))
         {
+            if(Flag.equals("LoginFail"))
+                return;
             if(size.equals(number))
                 sendProgressUpdate("quit","0");
             else
@@ -787,6 +851,7 @@ public class HttpsConnection {
 
                     try{
                         json.put("Id",Serial);
+
                     }catch(Exception e)
                     {
                         e.printStackTrace();
@@ -1251,6 +1316,76 @@ public class HttpsConnection {
                     if(conn.getResponseCode() == HttpURLConnection.HTTP_OK)
                     {
 
+                    }
+                    bufferedWriter.close();
+                    outputStream.close();
+
+                    conn.disconnect();
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
+                finally
+                {
+                    if(conn != null)
+                    {
+                        conn.disconnect();
+                    }
+                }
+            }
+        };
+        thread.start();
+    }
+
+
+    //최초 설치 후 서버에 앱 정보를 전송한다.
+    public void sendAppInfo(String url, String Serial, JSONArray jsonArray)
+    {
+        final String serial = Serial;
+        final JSONArray jsonarr = jsonArray;
+        final String paramURL = url;
+
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+
+                String urlString = paramURL;
+                HttpURLConnection conn = null;
+
+                try{
+                    URL url = new URL(urlString);
+
+                    trustAllHosts();
+
+                    HttpsURLConnection httpsURLConnection = (HttpsURLConnection)url.openConnection();
+                    httpsURLConnection.setHostnameVerifier(new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String hostname, SSLSession session) {
+                            return true;
+                        }
+                    });
+
+                    conn = httpsURLConnection;
+                    conn.setRequestMethod("POST");
+                    conn.setDoInput(true);
+                    conn.setDoOutput(true);
+                    conn.setRequestProperty("Content-Type", "application/json");
+
+                    OutputStream outputStream = conn.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+
+                    JSONObject json = new JSONObject();
+                    json.put("Id",serial);
+                    json.put("app",jsonarr);
+                    bufferedWriter.write(json.toString());
+                    bufferedWriter.flush();
+                    conn.connect();
+
+                    if(conn.getResponseCode() == HttpURLConnection.HTTP_OK)
+                    {
+                        Log.d("sendAppinfo(최초)","성공");
                     }
                     bufferedWriter.close();
                     outputStream.close();

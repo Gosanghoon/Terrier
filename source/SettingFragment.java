@@ -101,10 +101,10 @@ public class SettingFragment extends Fragment {
         {
             @Override
             public void onClick(View v) {
-
-                ht.sendCheckIn("https://58.141.234.126:55356/process/deviceon",serial);
-                ed.putBoolean("history",true);
-                ed.apply();
+                ht.sendCheckIn("https://58.141.234.126:55356/process/deviceonoff",serial);
+                ed.putBoolean("Check",true);
+                ed.commit();
+                Log.v("출퇴근값", String.valueOf(loginHistory.getBoolean("history",false)));
             }
         });
 
@@ -112,10 +112,11 @@ public class SettingFragment extends Fragment {
         {
             @Override
             public void onClick(View v) {
-
-                ht.checkout("https://58.141.234.126:55356/process/deviceoff",serial);
+                ht.checkout("https://58.141.234.126:55356/process/deviceonoff",serial);
+                ed.putBoolean("Check",false);
                 ed.putBoolean("history",false);
-                ed.apply();
+                ed.commit();
+                Log.v("출퇴근값", String.valueOf(loginHistory.getBoolean("history",false)));
             }
         });
 
@@ -142,7 +143,7 @@ public class SettingFragment extends Fragment {
                     byte[] bytes = bytearray.toByteArray();
                     String[] buffer = path.split("/");
                     HttpsConnection ht = new HttpsConnection();
-                    ht.imgBackup("https://58.141.234.126:50030/thumbnail",userinfo.getString("Id","fail"),bytes,buffer[8],"ff","ff","profile");
+                    ht.imgBackup("https://58.141.234.126:50030/thumbnail",serial,bytes,buffer[8],"ff","ff","profile");
                     bitmap = null;
                     bytearray.reset();
                     bytes = null;
